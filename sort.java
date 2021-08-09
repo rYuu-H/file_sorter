@@ -39,10 +39,10 @@ public class sort {
 
     void move(String path,String to) throws IOException{
         String fileExt = getFileExt(path);
-        String toPath ="D:\\test\\" + fileExt + "\\" + Paths.get(path).getFileName();
+        String toPath =to + "\\" + fileExt + "\\" + Paths.get(path).getFileName();
         File file = new File(path);
 
-        if (file.isFile()) {
+        if (file.isFile() && !file.isDirectory()) {
             String dir = to + "\\" + fileExt; 
             new File(dir).mkdirs();
             Files.move(Paths.get(path),Paths.get(toPath));

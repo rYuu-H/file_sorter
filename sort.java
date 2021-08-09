@@ -13,15 +13,17 @@ public class sort {
         Path path = Paths.get(from);
         Stream<Path> subPaths =Files.walk(path);
         subPaths.forEach(e -> {
+
             try {
                 move(e.toString(),to);
             } catch (IOException e1) {
                 e1.printStackTrace();
                 return;
             }
+            
         });
         subPaths.close();
-        
+        System.out.println("done!");
     }
 
     String getFileExt(String file){
@@ -40,12 +42,26 @@ public class sort {
     void move(String path,String to) throws IOException{
         String fileExt = getFileExt(path);
         String toPath =to + "\\" + fileExt + "\\" + Paths.get(path).getFileName();
+        
         File file = new File(path);
-
+        File file1 = new File(toPath);
         if (file.isFile() && !file.isDirectory()) {
-            String dir = to + "\\" + fileExt; 
-            new File(dir).mkdirs();
-            Files.move(Paths.get(path),Paths.get(toPath));
+            int i = 0;
+            while (file1.exists() && !(Files.size(file.toPath())==Files.size(file1.toPath()))){
+                toPath =to + "\\" + fileExt + "\\" + i + Paths.get(path).getFileName();
+                System.out.println("renamed "+ Paths.get(path).getFileName()+ " to " + i + Paths.get(path).getFileName());
+                file1 = new File(toPath);
+                i++;
+            }
+            if (file1.exists()){
+                System.out.println("skipped file "+ path + " because is the same with " + toPath);
+            }else{
+                String dir = to + "\\" + fileExt; 
+                new File(dir).mkdirs();
+                Files.move(Paths.get(path),Paths.get(toPath));
+                System.out.println("moved "+ path + " to " + toPath);
+
+            }
         }
     }
 

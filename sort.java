@@ -17,6 +17,7 @@ public class sort {
                 move(e.toString(),to);
             } catch (IOException e1) {
                 e1.printStackTrace();
+                return;
             }
         });
         subPaths.close();
@@ -36,15 +37,15 @@ public class sort {
         return extension;
     }
 
-    void move(String file,String to) throws IOException{
-        String fileExt = getFileExt(file);
-        String toPath ="D:\\test\\" + fileExt + "\\" + Paths.get(file).getFileName();
-        int i = file.lastIndexOf('.');
-        int p = Math.max(file.lastIndexOf('/'), file.lastIndexOf('\\'));
-        if (i > p) {
+    void move(String path,String to) throws IOException{
+        String fileExt = getFileExt(path);
+        String toPath ="D:\\test\\" + fileExt + "\\" + Paths.get(path).getFileName();
+        File file = new File(path);
+
+        if (file.isFile()) {
             String dir = to + "\\" + fileExt; 
             new File(dir).mkdirs();
-            Files.move(Paths.get(file),Paths.get(toPath));
+            Files.move(Paths.get(path),Paths.get(toPath));
         }
     }
 
